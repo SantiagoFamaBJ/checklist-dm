@@ -24,7 +24,7 @@ export default function TaskRow({
 
   return (
     <div
-      className={`flex items-center gap-3 border rounded-lg px-3 py-2.5 bg-white ${
+      className={`flex flex-wrap sm:flex-nowrap items-center gap-2 sm:gap-3 border rounded-lg px-3 py-2.5 bg-white ${
         vencida ? 'border-red-300' : 'border-gray-200'
       } ${completada ? 'opacity-50' : ''}`}
     >
@@ -36,14 +36,14 @@ export default function TaskRow({
       <span className={`text-xs font-medium rounded px-1.5 py-0.5 ${priorityColor(task.priority)}`}>
         P{task.priority}
       </span>
-      <div className="flex-1 min-w-0">
+      <div className="flex-1 min-w-[140px]">
         <div className={`text-sm ${completada ? 'line-through' : ''}`}>{task.title}</div>
         <div className="text-xs text-gray-500 truncate">
           {task.postponed_indefinite ? 'Pospuesta indefinido' : task.due_date} · {task.category}
         </div>
       </div>
       {!completada && (
-        <div className="flex gap-1 shrink-0">
+        <div className="flex gap-1 shrink-0 w-full sm:w-auto justify-end order-3 sm:order-none">
           <button
             onClick={() => onAction(task.id, 'postpone_1day')}
             className="text-xs border border-gray-300 rounded-md px-2 py-1 hover:bg-gray-50"
@@ -58,11 +58,16 @@ export default function TaskRow({
           >
             {task.postponed_indefinite ? 'Reactivar' : 'Indefinido'}
           </button>
+          <button onClick={() => onDelete(task.id)} className="text-xs text-gray-400 hover:text-red-600 shrink-0 px-1">
+            ✕
+          </button>
         </div>
       )}
-      <button onClick={() => onDelete(task.id)} className="text-xs text-gray-400 hover:text-red-600 shrink-0">
-        ✕
-      </button>
+      {completada && (
+        <button onClick={() => onDelete(task.id)} className="text-xs text-gray-400 hover:text-red-600 shrink-0">
+          ✕
+        </button>
+      )}
     </div>
   );
 }

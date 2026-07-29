@@ -43,7 +43,7 @@ export default function TaskForm({
         rows={2}
         className="border border-gray-300 rounded-md px-3 py-2 text-sm"
       />
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}

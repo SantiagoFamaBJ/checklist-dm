@@ -64,11 +64,11 @@ export default function AgendaPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-5">
-        <h1 className="text-xl font-medium">Agenda</h1>
+      <div className="flex items-center justify-between mb-5 gap-2">
+        <h1 className="text-lg sm:text-xl font-medium">Agenda</h1>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="bg-[#f15922] text-white text-sm font-medium px-4 py-2 rounded-md hover:opacity-90"
+          className="bg-[#f15922] text-white text-xs sm:text-sm font-medium px-3 sm:px-4 py-2 rounded-md hover:opacity-90 whitespace-nowrap"
         >
           + Nueva tarea
         </button>
@@ -84,22 +84,22 @@ export default function AgendaPage() {
         />
       )}
 
-      <div className="grid grid-cols-3 gap-3 mb-6">
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <div className="text-xs text-gray-500">Completadas hoy</div>
-          <div className="text-2xl font-medium">{completadasHoy.length}</div>
+      <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-6">
+        <div className="bg-white border border-gray-200 rounded-xl p-3 sm:p-4">
+          <div className="text-[11px] sm:text-xs text-gray-500">Completadas hoy</div>
+          <div className="text-lg sm:text-2xl font-medium">{completadasHoy.length}</div>
         </div>
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <div className="text-xs text-gray-500">Pendientes hoy</div>
-          <div className="text-2xl font-medium">{deHoy.length}</div>
+        <div className="bg-white border border-gray-200 rounded-xl p-3 sm:p-4">
+          <div className="text-[11px] sm:text-xs text-gray-500">Pendientes hoy</div>
+          <div className="text-lg sm:text-2xl font-medium">{deHoy.length}</div>
         </div>
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <div className="text-xs text-gray-500">Vencidas</div>
-          <div className="text-2xl font-medium text-red-600">{vencidas.length}</div>
+        <div className="bg-white border border-gray-200 rounded-xl p-3 sm:p-4">
+          <div className="text-[11px] sm:text-xs text-gray-500">Vencidas</div>
+          <div className="text-lg sm:text-2xl font-medium text-red-600">{vencidas.length}</div>
         </div>
       </div>
 
-      <div className="flex gap-2 mb-4 flex-wrap items-center">
+      <div className="flex flex-col sm:flex-row gap-2 mb-4 sm:items-center">
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}

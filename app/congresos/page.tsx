@@ -68,11 +68,11 @@ export default function CongresosPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-5">
-        <h1 className="text-xl font-medium">Congresos</h1>
+      <div className="flex items-center justify-between mb-5 gap-2">
+        <h1 className="text-lg sm:text-xl font-medium">Congresos</h1>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="bg-[#f15922] text-white text-sm font-medium px-4 py-2 rounded-md hover:opacity-90"
+          className="bg-[#f15922] text-white text-xs sm:text-sm font-medium px-3 sm:px-4 py-2 rounded-md hover:opacity-90 whitespace-nowrap"
         >
           + Nuevo congreso
         </button>
@@ -86,7 +86,7 @@ export default function CongresosPage() {
             placeholder="Nombre del congreso"
             className="border border-gray-300 rounded-md px-3 py-2 text-sm"
           />
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <select
               value={tipo}
               onChange={(e) => setTipo(e.target.value as 'propio' | 'tercero')}
@@ -134,15 +134,15 @@ export default function CongresosPage() {
             const total = c.checklist.length;
             return (
               <div key={c.id} className="bg-white border border-gray-200 rounded-xl p-4">
-                <div className="flex items-start justify-between mb-2">
-                  <div>
+                <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
+                  <div className="min-w-0">
                     <div className="text-sm font-medium">{c.nombre}</div>
                     <div className="text-xs text-gray-500">
                       {c.tipo === 'propio' ? 'Nuestro' : 'De un tercero'}
                       {c.fecha ? ` · ${c.fecha}` : ''}
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 shrink-0">
                     {total > 0 && (
                       <span className="text-xs bg-green-100 text-green-800 rounded-md px-2 py-1">
                         {done}/{total} listo
