@@ -5,7 +5,7 @@ export async function PATCH(req: Request, props: { params: Promise<{ id: string 
   const params = await props.params;
   const body = await req.json();
   const update: Record<string, unknown> = {};
-  ['nombre', 'tipo', 'fecha', 'notas'].forEach((k) => {
+  ['nombre', 'tipo', 'fecha_inicio', 'fecha_fin', 'notas'].forEach((k) => {
     if (body[k] !== undefined) update[k] = body[k];
   });
 

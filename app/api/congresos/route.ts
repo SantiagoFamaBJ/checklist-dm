@@ -6,7 +6,7 @@ export async function GET() {
   const { data: congresos, error } = await supabase
     .from('cdm_congresos')
     .select('*')
-    .order('fecha', { ascending: true, nullsFirst: false });
+    .order('fecha_inicio', { ascending: true, nullsFirst: false });
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
 
   const { data: items } = await supabase
@@ -29,7 +29,8 @@ export async function POST(req: Request) {
     .insert({
       nombre: body.nombre,
       tipo: body.tipo,
-      fecha: body.fecha || null,
+      fecha_inicio: body.fecha_inicio || null,
+      fecha_fin: body.fecha_fin || null,
       notas: body.notas || null,
     })
     .select()
