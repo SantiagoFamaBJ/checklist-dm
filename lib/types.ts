@@ -3,7 +3,7 @@ export type Task = {
   title: string;
   description: string | null;
   category: string;
-  due_date: string;
+  due_date: string | null;
   priority: number;
   status: 'pendiente' | 'completada';
   postponed_indefinite: boolean;

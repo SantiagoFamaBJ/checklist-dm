@@ -6,7 +6,7 @@ export async function GET() {
     .from('cdm_tasks')
     .select('*')
     .order('postponed_indefinite', { ascending: true })
-    .order('due_date', { ascending: true })
+    .order('due_date', { ascending: true, nullsFirst: false })
     .order('priority', { ascending: false });
 
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
@@ -21,7 +21,7 @@ export async function POST(req: Request) {
       title: body.title,
       description: body.description || null,
       category: body.category,
-      due_date: body.due_date,
+      due_date: body.due_date || null,
       priority: body.priority ?? 5,
     })
     .select()

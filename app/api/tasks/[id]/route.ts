@@ -19,12 +19,10 @@ export async function PATCH(req: Request, props: { params: Promise<{ id: string 
       .select('due_date')
       .eq('id', params.id)
       .single();
-    if (current) {
-      const d = new Date(current.due_date);
-      d.setDate(d.getDate() + 1);
-      update.due_date = d.toISOString().split('T')[0];
-      update.postponed_indefinite = false;
-    }
+    const base = current?.due_date ? new Date(current.due_date) : new Date();
+    base.setDate(base.getDate() + 1);
+    update.due_date = base.toISOString().split('T')[0];
+    update.postponed_indefinite = false;
   } else if (body.action === 'postpone_indefinite') {
     update.postponed_indefinite = true;
   } else if (body.action === 'unpostpone_indefinite') {
