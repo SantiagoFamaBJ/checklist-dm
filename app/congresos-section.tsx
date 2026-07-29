@@ -5,13 +5,22 @@ import { Congreso, ChecklistItem } from '@/lib/types';
 
 type CongresoConChecklist = Congreso & { checklist: ChecklistItem[] };
 
-export default function CongresosPage() {
+function rangoFechas(c: Congreso) {
+  if (!c.fecha_inicio && !c.fecha_fin) return 'Sin fecha';
+  if (c.fecha_inicio && c.fecha_fin && c.fecha_inicio !== c.fecha_fin) {
+    return `${c.fecha_inicio} al ${c.fecha_fin}`;
+  }
+  return c.fecha_inicio || c.fecha_fin || 'Sin fecha';
+}
+
+export default function CongresosSection() {
   const [congresos, setCongresos] = useState<CongresoConChecklist[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [nombre, setNombre] = useState('');
   const [tipo, setTipo] = useState<'propio' | 'tercero'>('tercero');
-  const [fecha, setFecha] = useState('');
+  const [fechaInicio, setFechaInicio] = useState('');
+  const [fechaFin, setFechaFin] = useState('');
   const [notas, setNotas] = useState('');
   const [newItemText, setNewItemText] = useState<Record<string, string>>({});
 
@@ -31,10 +40,17 @@ export default function CongresosPage() {
     await fetch('/api/congresos', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nombre, tipo, fecha: fecha || null, notas }),
+      body: JSON.stringify({
+        nombre,
+        tipo,
+        fecha_inicio: fechaInicio || null,
+        fecha_fin: fechaFin || null,
+        notas,
+      }),
     });
     setNombre('');
-    setFecha('');
+    setFechaInicio('');
+    setFechaFin('');
     setNotas('');
     setShowForm(false);
     load();
@@ -67,40 +83,52 @@ export default function CongresosPage() {
   }
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-6 gap-2">
-        <h1 className="text-xl sm:text-2xl font-semibold tracking-tight">Congresos</h1>
+    <div className="mt-10">
+      <div className="flex items-center justify-between mb-4 gap-2">
+        <h2 className="text-lg sm:text-xl font-semibold tracking-tight">Congresos</h2>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="bg-[#f15922] text-white text-xs sm:text-sm font-medium px-3.5 sm:px-4 py-2 rounded-full shadow-sm hover:bg-[#d9481a] transition-colors whitespace-nowrap"
+          className="bg-white text-gray-700 text-xs sm:text-sm font-medium px-3.5 py-2 rounded-full border border-gray-200 hover:bg-gray-50 transition-colors whitespace-nowrap"
         >
           + Nuevo congreso
         </button>
       </div>
 
       {showForm && (
-        <div className="bg-white rounded-2xl p-4 sm:p-5 mb-6 shadow-sm border border-gray-100 flex flex-col gap-3">
+        <div className="bg-white rounded-2xl p-4 sm:p-5 mb-5 shadow-sm border border-gray-100 flex flex-col gap-3">
           <input
             value={nombre}
             onChange={(e) => setNombre(e.target.value)}
             placeholder="Nombre del congreso"
             className="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#f15922]/30"
           />
+          <select
+            value={tipo}
+            onChange={(e) => setTipo(e.target.value as 'propio' | 'tercero')}
+            className="border border-gray-200 rounded-lg px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#f15922]/30"
+          >
+            <option value="tercero">De un tercero</option>
+            <option value="propio">Nuestro</option>
+          </select>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            <select
-              value={tipo}
-              onChange={(e) => setTipo(e.target.value as 'propio' | 'tercero')}
-              className="border border-gray-200 rounded-lg px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#f15922]/30"
-            >
-              <option value="tercero">De un tercero</option>
-              <option value="propio">Nuestro</option>
-            </select>
-            <input
-              type="date"
-              value={fecha}
-              onChange={(e) => setFecha(e.target.value)}
-              className="border border-gray-200 rounded-lg px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#f15922]/30"
-            />
+            <div className="flex flex-col gap-1">
+              <label className="text-xs text-gray-400 pl-0.5">Inicio</label>
+              <input
+                type="date"
+                value={fechaInicio}
+                onChange={(e) => setFechaInicio(e.target.value)}
+                className="border border-gray-200 rounded-lg px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#f15922]/30"
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label className="text-xs text-gray-400 pl-0.5">Finalización</label>
+              <input
+                type="date"
+                value={fechaFin}
+                onChange={(e) => setFechaFin(e.target.value)}
+                className="border border-gray-200 rounded-lg px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#f15922]/30"
+              />
+            </div>
           </div>
           <textarea
             value={notas}
@@ -126,7 +154,7 @@ export default function CongresosPage() {
       {loading ? (
         <p className="text-sm text-gray-400">Cargando...</p>
       ) : congresos.length === 0 ? (
-        <div className="text-center py-12 text-gray-400 text-sm">No hay congresos cargados todavía.</div>
+        <div className="text-center py-8 text-gray-400 text-sm">No hay congresos cargados todavía.</div>
       ) : (
         <div className="flex flex-col gap-4">
           {congresos.map((c) => {
@@ -138,8 +166,7 @@ export default function CongresosPage() {
                   <div className="min-w-0">
                     <div className="text-sm font-semibold">{c.nombre}</div>
                     <div className="text-xs text-gray-400 mt-0.5">
-                      {c.tipo === 'propio' ? 'Nuestro' : 'De un tercero'}
-                      {c.fecha ? ` · ${c.fecha}` : ' · Sin fecha'}
+                      {c.tipo === 'propio' ? 'Nuestro' : 'De un tercero'} · {rangoFechas(c)}
                     </div>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">

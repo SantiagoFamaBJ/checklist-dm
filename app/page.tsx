@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Task } from '@/lib/types';
 import TaskForm from './task-form';
 import TaskRow from './task-row';
+import CongresosSection from './congresos-section';
 
 function todayStr() {
   return new Date().toISOString().split('T')[0];
@@ -148,6 +149,8 @@ export default function AgendaPage() {
           </div>
         </div>
       )}
+
+      <CongresosSection />
     </div>
   );
 }

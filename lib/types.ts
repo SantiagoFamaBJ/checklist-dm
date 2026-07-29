@@ -15,7 +15,8 @@ export type Congreso = {
   id: string;
   nombre: string;
   tipo: 'propio' | 'tercero';
-  fecha: string | null;
+  fecha_inicio: string | null;
+  fecha_fin: string | null;
   notas: string | null;
   created_at: string;
 };
