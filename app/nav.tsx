@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 
 const links = [
   { href: '/', label: 'Agenda' },
-  { href: '/admin', label: 'Admin' },
+  { href: '/ADMIN', label: 'Admin' },
 ];
 
 export default function Nav() {

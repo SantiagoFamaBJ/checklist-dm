@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 
 const KEY = 'cdm_admin_auth';
-const PASSWORD = 'DM2026';
 
 export function useAdminAuth() {
   const [authed, setAuthed] = useState(false);
@@ -14,8 +13,13 @@ export function useAdminAuth() {
     setChecked(true);
   }, []);
 
-  function login(pass: string) {
-    if (pass === PASSWORD) {
+  async function login(pass: string) {
+    const res = await fetch('/api/admin-login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: pass.trim() }),
+    });
+    if (res.ok) {
       localStorage.setItem(KEY, 'true');
       setAuthed(true);
       return true;

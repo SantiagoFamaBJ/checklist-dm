@@ -21,8 +21,8 @@ export default function AdminPage() {
     if (authed) load();
   }, [authed]);
 
-  function submitLogin() {
-    if (login(pass)) {
+  async function submitLogin() {
+    if (await login(pass)) {
       setError(false);
     } else {
       setError(true);
